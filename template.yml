@@ -8,7 +8,7 @@ Resources:
     EC2VPC:
         Type: "AWS::EC2::VPC"
         Properties:
-            CidrBlock: "10.4.0.0/16"
+            CidrBlock: "10.1.0.0/16"
             EnableDnsSupport: true
             EnableDnsHostnames: false
             InstanceTenancy: "default"
@@ -21,7 +21,7 @@ Resources:
         Type: "AWS::EC2::Subnet"
         Properties:
             AvailabilityZone: !Sub "${AWS::Region}a"
-            CidrBlock: "10.4.0.0/20"
+            CidrBlock: "10.1.0.0/20"
             VpcId: !Ref EC2VPC
             MapPublicIpOnLaunch: false
             Tags:
@@ -34,7 +34,7 @@ Resources:
         Type: "AWS::EC2::Subnet"
         Properties:
             AvailabilityZone: !Sub "${AWS::Region}c"
-            CidrBlock: "10.4.16.0/20"
+            CidrBlock: "10.1.16.0/20"
             VpcId: !Ref EC2VPC
             MapPublicIpOnLaunch: false
             Tags:
@@ -47,7 +47,7 @@ Resources:
         Type: "AWS::EC2::Subnet"
         Properties:
             AvailabilityZone: !Sub "${AWS::Region}d"
-            CidrBlock: "10.4.32.0/20"
+            CidrBlock: "10.1.32.0/20"
             VpcId: !Ref EC2VPC
             MapPublicIpOnLaunch: false
             Tags:
