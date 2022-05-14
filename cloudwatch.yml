@@ -1,0 +1,244 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Description: CloudWatch Alarm
+
+#####################################################################
+# Parameters 設定
+#####################################################################
+Parameters:
+  AlertName:
+    Description: AlertName
+    Type: String
+    Default: alert-test
+  Ec2InstanceId:
+    Description: EC2 InstanceId
+    Type: AWS::EC2::Instance::Id
+  Ec2ImageId:
+    Description: EC2 ImageId (AMIID)
+    Type: String
+    Default: ami-XXXXXXXXXXXX  # EC2 の ImageId を記載
+  Ec2InstanceType:
+    Description: EC2 InstanceType
+    Type: String
+    Default: t3.medium  # インスタンスタイプを記載
+  SNSTopicName:
+    Description: SNS Topic Name
+    Type: String
+    Default: arn:aws:sns:ap-northeast-1:XXXXX
+
+#####################################################################
+# Resources 設定
+#####################################################################
+Resources:
+#####################################################################
+# EC2 のアラーム設定
+#####################################################################
+#####################################################################
+# CPU使用率
+#####################################################################
+  EC2CPUUtilizationAlarm70:
+    Type: AWS::CloudWatch::Alarm
+    Properties:
+      AlarmActions:
+        - !Ref SNSTopicName  # アラーム時のアクション
+      AlarmName: !Sub ${AlertName} EC2 CPU USED 70%
+      MetricName: CPUUtilization
+      Namespace: AWS/EC2
+      Statistic: Average  # 平均
+      Period: 300  # 期間[s]
+      EvaluationPeriods: 1  # 閾値超過回数
+      Threshold: 70  # 閾値
+      TreatMissingData: notBreaching  # 欠落データは良好
+      # OKActions:
+      #   - !Ref SNSTopicName  # 復旧時のアクション
+      ComparisonOperator: GreaterThanOrEqualToThreshold  # 閾値以上
+      Dimensions:
+        - Name: InstanceId
+          Value: !Ref Ec2InstanceId
+  EC2CPUUtilizationAlarm80:
+    Type: AWS::CloudWatch::Alarm
+    Properties:
+      AlarmActions:
+        - !Ref SNSTopicName  # アラーム時のアクション
+      AlarmName: !Sub ${AlertName} EC2 CPU USED 80%
+      MetricName: CPUUtilization
+      Namespace: AWS/EC2
+      Statistic: Average  # 平均
+      Period: 300  # 期間[s]
+      EvaluationPeriods: 1  # 閾値超過回数
+      Threshold: 80  # 閾値
+      TreatMissingData: notBreaching  # 欠落データは良好
+      # OKActions:
+      #   - !Ref SNSTopicName  # 復旧時のアクション
+      ComparisonOperator: GreaterThanOrEqualToThreshold  # 閾値以上
+      Dimensions:
+        - Name: InstanceId
+          Value: !Ref Ec2InstanceId
+  EC2CPUUtilizationAlarm90:
+    Type: AWS::CloudWatch::Alarm
+    Properties:
+      AlarmActions:
+        - !Ref SNSTopicName  # アラーム時のアクション
+      AlarmName: !Sub ${AlertName} EC2 CPU USED 90%
+      MetricName: CPUUtilization
+      Namespace: AWS/EC2
+      Statistic: Average  # 平均
+      Period: 300  # 期間[s]
+      EvaluationPeriods: 1  # 閾値超過回数
+      Threshold: 90  # 閾値
+      TreatMissingData: notBreaching  # 欠落データは良好
+      # OKActions:
+      #   - !Ref SNSTopicName  # 復旧時のアクション
+      ComparisonOperator: GreaterThanOrEqualToThreshold  # 閾値以上
+      Dimensions:
+        - Name: InstanceId
+          Value: !Ref Ec2InstanceId
+#####################################################################
+# メモリ使用率
+#####################################################################
+  EC2MemUsedPercentAlarm70:
+    Type: AWS::CloudWatch::Alarm
+    Properties:
+      AlarmActions:
+        - !Ref SNSTopicName  # アラーム時のアクション
+      AlarmName: !Sub ${AlertName} EC2 MEM USED 70%
+      MetricName: mem_used_percent
+      Namespace: CWAgent
+      Statistic: Average  # 平均
+      Period: 300  # 期間[s]
+      EvaluationPeriods: 1  # 閾値超過回数
+      Threshold: 70  # 閾値
+      TreatMissingData: notBreaching  # 欠落データは良好
+      # OKActions:
+      #   - !Ref SNSTopicName  # 復旧時のアクション
+      ComparisonOperator: GreaterThanOrEqualToThreshold  # 閾値以上
+      Dimensions:
+        - Name: InstanceId
+          Value: !Ref Ec2InstanceId
+  EC2MemUsedPercentAlarm80:
+    Type: AWS::CloudWatch::Alarm
+    Properties:
+      AlarmActions:
+        - !Ref SNSTopicName  # アラーム時のアクション
+      AlarmName: !Sub ${AlertName} EC2 MEM USED 80%
+      MetricName: mem_used_percent
+      Namespace: CWAgent
+      Statistic: Average  # 平均
+      Period: 300  # 期間[s]
+      EvaluationPeriods: 1  # 閾値超過回数
+      Threshold: 80  # 閾値
+      TreatMissingData: notBreaching  # 欠落データは良好
+      # OKActions:
+      #   - !Ref SNSTopicName  # 復旧時のアクション
+      ComparisonOperator: GreaterThanOrEqualToThreshold  # 閾値以上
+      Dimensions:
+        - Name: InstanceId
+          Value: !Ref Ec2InstanceId
+  EC2MemUsedPercentAlarm90:
+    Type: AWS::CloudWatch::Alarm
+    Properties:
+      AlarmActions:
+        - !Ref SNSTopicName  # アラーム時のアクション
+      AlarmName: !Sub ${AlertName} EC2 MEM USED 90%
+      MetricName: mem_used_percent
+      Namespace: CWAgent
+      Statistic: Average  # 平均
+      Period: 300  # 期間[s]
+      EvaluationPeriods: 1  # 閾値超過回数
+      Threshold: 90  # 閾値
+      TreatMissingData: notBreaching  # 欠落データは良好
+      # OKActions:
+      #   - !Ref SNSTopicName  # 復旧時のアクション
+      ComparisonOperator: GreaterThanOrEqualToThreshold  # 閾値以上
+      Dimensions:
+        - Name: InstanceId
+          Value: !Ref Ec2InstanceId
+#####################################################################
+# disk使用率
+#####################################################################
+  EC2DiskUsedPercentAlarm70:
+    Type: AWS::CloudWatch::Alarm
+    Properties:
+      AlarmActions:
+        - !Ref SNSTopicName  # アラーム時のアクション
+      AlarmName: !Sub ${AlertName} EC2 DISK USED 70%
+      MetricName: disk_used_percent
+      Namespace: CWAgent
+      Statistic: Average  # 平均
+      Period: 300  # 期間[s]
+      EvaluationPeriods: 1  # 閾値超過回数
+      Threshold: 70  # 閾値
+      TreatMissingData: notBreaching  # 欠落データは良好
+      # OKActions:
+      #   - !Ref SNSTopicName  # 復旧時のアクション
+      ComparisonOperator: GreaterThanOrEqualToThreshold  # 閾値以上
+      Dimensions:
+        - Name: path
+          Value: /  # 環境に合わせて変更
+        - Name: InstanceId
+          Value: !Ref Ec2InstanceId
+        - Name: ImageId
+          Value: !Ref Ec2ImageId
+        - Name: InstanceType
+          Value: !Ref Ec2InstanceType
+        - Name: device
+          Value: nvme0n1p1  # 環境に合わせて変更
+        - Name: fstype
+          Value: xfs  # 環境に合わせて変更
+  EC2DiskUsedPercentAlarm80:
+    Type: AWS::CloudWatch::Alarm
+    Properties:
+      AlarmActions:
+        - !Ref SNSTopicName  # アラーム時のアクション
+      AlarmName: !Sub ${AlertName} EC2 DISK USED 80%
+      MetricName: disk_used_percent
+      Namespace: CWAgent
+      Statistic: Average  # 平均
+      Period: 300  # 期間[s]
+      EvaluationPeriods: 1  # 閾値超過回数
+      Threshold: 80  # 閾値
+      TreatMissingData: notBreaching  # 欠落データは良好
+      # OKActions:
+      #   - !Ref SNSTopicName  # 復旧時のアクション
+      ComparisonOperator: GreaterThanOrEqualToThreshold  # 閾値以上
+      Dimensions:
+        - Name: path
+          Value: /  # 環境に合わせて変更
+        - Name: InstanceId
+          Value: !Ref Ec2InstanceId
+        - Name: ImageId
+          Value: !Ref Ec2ImageId
+        - Name: InstanceType
+          Value: !Ref Ec2InstanceType
+        - Name: device
+          Value: nvme0n1p1  # 環境に合わせて変更
+        - Name: fstype
+          Value: xfs  # 環境に合わせて変更
+  EC2DiskUsedPercentAlarm90:
+    Type: AWS::CloudWatch::Alarm
+    Properties:
+      AlarmActions:
+        - !Ref SNSTopicName  # アラーム時のアクション
+      AlarmName: !Sub ${AlertName} EC2 DISK USED 90%
+      MetricName: disk_used_percent
+      Namespace: CWAgent
+      Statistic: Average  # 平均
+      Period: 300  # 期間[s]
+      EvaluationPeriods: 1  # 閾値超過回数
+      Threshold: 90  # 閾値
+      TreatMissingData: notBreaching  # 欠落データは良好
+      # OKActions:
+      #   - !Ref SNSTopicName  # 復旧時のアクション
+      ComparisonOperator: GreaterThanOrEqualToThreshold  # 閾値以上
+      Dimensions:
+        - Name: path
+          Value: /  # 環境に合わせて変更
+        - Name: InstanceId
+          Value: !Ref Ec2InstanceId
+        - Name: ImageId
+          Value: !Ref Ec2ImageId
+        - Name: InstanceType
+          Value: !Ref Ec2InstanceType
+        - Name: device
+          Value: nvme0n1p1  # 環境に合わせて変更
+        - Name: fstype
+          Value: xfs  # 環境に合わせて変更
