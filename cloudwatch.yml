@@ -9,14 +9,14 @@ Parameters:
     Description: AlertName
     Type: String
     Default: alert-test
-  Ec2InstanceId:
+  EC2InstanceId:
     Description: EC2 InstanceId
     Type: AWS::EC2::Instance::Id
-  Ec2ImageId:
+  EC2ImageId:
     Description: EC2 ImageId (AMIID)
     Type: String
     Default: ami-XXXXXXXXXXXX  # EC2 の ImageId を記載
-  Ec2InstanceType:
+  EC2InstanceType:
     Description: EC2 InstanceType
     Type: String
     Default: t3.medium  # インスタンスタイプを記載
@@ -53,7 +53,7 @@ Resources:
       ComparisonOperator: GreaterThanOrEqualToThreshold  # 閾値以上
       Dimensions:
         - Name: InstanceId
-          Value: !Ref Ec2InstanceId
+          Value: !Ref EC2InstanceId
   EC2CPUUtilizationAlarm80:
     Type: AWS::CloudWatch::Alarm
     Properties:
@@ -72,7 +72,7 @@ Resources:
       ComparisonOperator: GreaterThanOrEqualToThreshold  # 閾値以上
       Dimensions:
         - Name: InstanceId
-          Value: !Ref Ec2InstanceId
+          Value: !Ref EC2InstanceId
   EC2CPUUtilizationAlarm90:
     Type: AWS::CloudWatch::Alarm
     Properties:
@@ -91,7 +91,7 @@ Resources:
       ComparisonOperator: GreaterThanOrEqualToThreshold  # 閾値以上
       Dimensions:
         - Name: InstanceId
-          Value: !Ref Ec2InstanceId
+          Value: !Ref EC2InstanceId
 #####################################################################
 # メモリ使用率
 #####################################################################
@@ -113,7 +113,7 @@ Resources:
       ComparisonOperator: GreaterThanOrEqualToThreshold  # 閾値以上
       Dimensions:
         - Name: InstanceId
-          Value: !Ref Ec2InstanceId
+          Value: !Ref EC2InstanceId
   EC2MemUsedPercentAlarm80:
     Type: AWS::CloudWatch::Alarm
     Properties:
@@ -132,7 +132,7 @@ Resources:
       ComparisonOperator: GreaterThanOrEqualToThreshold  # 閾値以上
       Dimensions:
         - Name: InstanceId
-          Value: !Ref Ec2InstanceId
+          Value: !Ref EC2InstanceId
   EC2MemUsedPercentAlarm90:
     Type: AWS::CloudWatch::Alarm
     Properties:
@@ -151,7 +151,7 @@ Resources:
       ComparisonOperator: GreaterThanOrEqualToThreshold  # 閾値以上
       Dimensions:
         - Name: InstanceId
-          Value: !Ref Ec2InstanceId
+          Value: !Ref EC2InstanceId
 #####################################################################
 # disk使用率
 #####################################################################
@@ -175,11 +175,11 @@ Resources:
         - Name: path
           Value: /  # 環境に合わせて変更
         - Name: InstanceId
-          Value: !Ref Ec2InstanceId
+          Value: !Ref EC2InstanceId
         - Name: ImageId
-          Value: !Ref Ec2ImageId
+          Value: !Ref EC2ImageId
         - Name: InstanceType
-          Value: !Ref Ec2InstanceType
+          Value: !Ref EC2InstanceType
         - Name: device
           Value: nvme0n1p1  # 環境に合わせて変更
         - Name: fstype
@@ -204,11 +204,11 @@ Resources:
         - Name: path
           Value: /  # 環境に合わせて変更
         - Name: InstanceId
-          Value: !Ref Ec2InstanceId
+          Value: !Ref EC2InstanceId
         - Name: ImageId
-          Value: !Ref Ec2ImageId
+          Value: !Ref EC2ImageId
         - Name: InstanceType
-          Value: !Ref Ec2InstanceType
+          Value: !Ref EC2InstanceType
         - Name: device
           Value: nvme0n1p1  # 環境に合わせて変更
         - Name: fstype
@@ -233,11 +233,11 @@ Resources:
         - Name: path
           Value: /  # 環境に合わせて変更
         - Name: InstanceId
-          Value: !Ref Ec2InstanceId
+          Value: !Ref EC2InstanceId
         - Name: ImageId
-          Value: !Ref Ec2ImageId
+          Value: !Ref EC2ImageId
         - Name: InstanceType
-          Value: !Ref Ec2InstanceType
+          Value: !Ref EC2InstanceType
         - Name: device
           Value: nvme0n1p1  # 環境に合わせて変更
         - Name: fstype
