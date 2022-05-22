@@ -1,0 +1,256 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Description: CloudWatch Alarm
+
+#####################################################################
+# Parameters 設定
+#####################################################################
+Parameters:
+  AlertName:
+    Description: AlertName
+    Type: String
+    Default: ec-test
+  Ec2InstanceId:
+    Description: EC2 InstanceId
+    Type: AWS::EC2::Instance::Id
+  Ec2ImageId:
+    Description: EC2 ImageId (AMIID)
+    Type: String
+    Default: ami-XXXXXXXXXXXX  # EC2 の ImageId を記載
+  Ec2InstanceType:
+    Description: EC2 InstanceType
+    Type: String
+    Default: t3.medium  # インスタンスタイプを記載
+  SNSTopicName:
+    Description: SNS Topic Name for mediowl
+    Type: String
+    Default: arn:aws:sns:ap-northeast-1:XXXXX
+
+#####################################################################
+# Resources 設定
+#####################################################################
+Resources:
+#####################################################################
+# EC2 のアラーム設定
+#####################################################################
+#####################################################################
+# CPU使用率
+#####################################################################
+  EC2CPUUtilizationAlarm70:
+    Type: AWS::CloudWatch::Alarm
+    Properties:
+      AlarmActions:
+        - !Ref SNSTopicName  # アラーム時のアクション
+      AlarmName: !Sub ${AlertName} EC2 CPU USED 70%
+      MetricName: CPUUtilization
+      Namespace: AWS/EC2
+      Statistic: Average  # 平均
+      Period: 300  # 期間[s]
+      EvaluationPeriods: 1  # 閾値超過回数
+      Threshold: 70  # 閾値
+      TreatMissingData: notBreaching  # 欠落データは良好
+      # OKActions:
+      #   - !Ref SNSTopicName  # 復旧時のアクション
+      ComparisonOperator: GreaterThanOrEqualToThreshold  # 閾値以上
+      Dimensions:
+        - Name: InstanceId
+          Value: !Ref Ec2InstanceId
+  EC2CPUUtilizationAlarm80:
+    Type: AWS::CloudWatch::Alarm
+    Properties:
+      AlarmActions:
+        - !Ref SNSTopicName  # アラーム時のアクション
+      AlarmName: !Sub ${AlertName} EC2 CPU USED 80%
+      MetricName: CPUUtilization
+      Namespace: AWS/EC2
+      Statistic: Average  # 平均
+      Period: 300  # 期間[s]
+      EvaluationPeriods: 1  # 閾値超過回数
+      Threshold: 80  # 閾値
+      TreatMissingData: notBreaching  # 欠落データは良好
+      # OKActions:
+      #   - !Ref SNSTopicName  # 復旧時のアクション
+      ComparisonOperator: GreaterThanOrEqualToThreshold  # 閾値以上
+      Dimensions:
+        - Name: InstanceId
+          Value: !Ref Ec2InstanceId
+  EC2CPUUtilizationAlarm90:
+    Type: AWS::CloudWatch::Alarm
+    Properties:
+      AlarmActions:
+        - !Ref SNSTopicName  # アラーム時のアクション
+      AlarmName: !Sub ${AlertName} EC2 CPU USED 90%
+      MetricName: CPUUtilization
+      Namespace: AWS/EC2
+      Statistic: Average  # 平均
+      Period: 300  # 期間[s]
+      EvaluationPeriods: 1  # 閾値超過回数
+      Threshold: 90  # 閾値
+      TreatMissingData: notBreaching  # 欠落データは良好
+      # OKActions:
+      #   - !Ref SNSTopicName  # 復旧時のアクション
+      ComparisonOperator: GreaterThanOrEqualToThreshold  # 閾値以上
+      Dimensions:
+        - Name: InstanceId
+          Value: !Ref Ec2InstanceId
+#####################################################################
+# メモリ使用率
+#####################################################################
+  EC2MemUsedPercentAlarm70:
+    Type: AWS::CloudWatch::Alarm
+    Properties:
+      AlarmActions:
+        - !Ref SNSTopicName  # アラーム時のアクション
+      AlarmName: !Sub ${AlertName} EC2 MEM USED 70%
+      MetricName: "Memory % Committed Bytes In Use"
+      Namespace: CWAgent
+      Statistic: Average  # 平均
+      Period: 300  # 期間[s]
+      EvaluationPeriods: 1  # 閾値超過回数
+      Threshold: 70  # 閾値
+      TreatMissingData: notBreaching  # 欠落データは良好
+      # OKActions:
+      #   - !Ref SNSTopicName  # 復旧時のアクション
+      ComparisonOperator: GreaterThanOrEqualToThreshold  # 閾値以上
+      Dimensions:
+        - Name: InstanceId
+          Value: !Ref Ec2InstanceId
+        - Name: ImageId
+          Value: !Ref Ec2ImageId
+        - Name: InstanceType
+          Value: !Ref Ec2InstanceType
+        - Name: objectname
+          Value: Memory
+  EC2MemUsedPercentAlarm80:
+    Type: AWS::CloudWatch::Alarm
+    Properties:
+      AlarmActions:
+        - !Ref SNSTopicName  # アラーム時のアクション
+      AlarmName: !Sub ${AlertName} EC2 MEM USED 80%
+      MetricName: "Memory % Committed Bytes In Use"
+      Namespace: CWAgent
+      Statistic: Average  # 平均
+      Period: 300  # 期間[s]
+      EvaluationPeriods: 1  # 閾値超過回数
+      Threshold: 80  # 閾値
+      TreatMissingData: notBreaching  # 欠落データは良好
+      # OKActions:
+      #   - !Ref SNSTopicName  # 復旧時のアクション
+      ComparisonOperator: GreaterThanOrEqualToThreshold  # 閾値以上
+      Dimensions:
+        - Name: InstanceId
+          Value: !Ref Ec2InstanceId
+        - Name: ImageId
+          Value: !Ref Ec2ImageId
+        - Name: InstanceType
+          Value: !Ref Ec2InstanceType
+        - Name: objectname
+          Value: Memory
+  EC2MemUsedPercentAlarm90:
+    Type: AWS::CloudWatch::Alarm
+    Properties:
+      AlarmActions:
+        - !Ref SNSTopicName  # アラーム時のアクション
+      AlarmName: !Sub ${AlertName} EC2 MEM USED 90%
+      MetricName: "Memory % Committed Bytes In Use"
+      Namespace: CWAgent
+      Statistic: Average  # 平均
+      Period: 300  # 期間[s]
+      EvaluationPeriods: 1  # 閾値超過回数
+      Threshold: 90  # 閾値
+      TreatMissingData: notBreaching  # 欠落データは良好
+      # OKActions:
+      #   - !Ref SNSTopicName  # 復旧時のアクション
+      ComparisonOperator: GreaterThanOrEqualToThreshold  # 閾値以上
+      Dimensions:
+        - Name: InstanceId
+          Value: !Ref Ec2InstanceId
+        - Name: ImageId
+          Value: !Ref Ec2ImageId
+        - Name: InstanceType
+          Value: !Ref Ec2InstanceType
+        - Name: objectname
+          Value: Memory
+#####################################################################
+# disk使用率
+#####################################################################
+  EC2DiskUsedPercentAlarm70:
+    Type: AWS::CloudWatch::Alarm
+    Properties:
+      AlarmActions:
+        - !Ref SNSTopicName  # アラーム時のアクション
+      AlarmName: !Sub ${AlertName} EC2 DISK USED 70%
+      MetricName: "LogicalDisk % Free Space"
+      Namespace: CWAgent
+      Statistic: Average  # 平均
+      Period: 300  # 期間[s]
+      EvaluationPeriods: 1  # 閾値超過回数
+      Threshold: 30  # 閾値
+      TreatMissingData: notBreaching  # 欠落データは良好
+      # OKActions:
+      #   - !Ref SNSTopicName  # 復旧時のアクション
+      ComparisonOperator: LessThanOrEqualToThreshold  # 閾値以下
+      Dimensions:
+        - Name: InstanceId
+          Value: !Ref Ec2InstanceId
+        - Name: ImageId
+          Value: !Ref Ec2ImageId
+        - Name: InstanceType
+          Value: !Ref Ec2InstanceType
+        - Name: instance
+          Value: "C:"
+        - Name: objectname
+          Value: LogicalDisk
+  EC2DiskUsedPercentAlarm80:
+    Type: AWS::CloudWatch::Alarm
+    Properties:
+      AlarmActions:
+        - !Ref SNSTopicName  # アラーム時のアクション
+      AlarmName: !Sub ${AlertName} EC2 DISK USED 80%
+      MetricName: "LogicalDisk % Free Space"
+      Namespace: CWAgent
+      Statistic: Average  # 平均
+      Period: 300  # 期間[s]
+      EvaluationPeriods: 1  # 閾値超過回数
+      Threshold: 20  # 閾値
+      TreatMissingData: notBreaching  # 欠落データは良好
+      # OKActions:
+      #   - !Ref SNSTopicName  # 復旧時のアクション
+      ComparisonOperator: LessThanOrEqualToThreshold  # 閾値以下
+      Dimensions:
+        - Name: InstanceId
+          Value: !Ref Ec2InstanceId
+        - Name: ImageId
+          Value: !Ref Ec2ImageId
+        - Name: InstanceType
+          Value: !Ref Ec2InstanceType
+        - Name: instance
+          Value: "C:"
+        - Name: objectname
+          Value: LogicalDisk
+  EC2DiskUsedPercentAlarm90:
+    Type: AWS::CloudWatch::Alarm
+    Properties:
+      AlarmActions:
+        - !Ref SNSTopicName  # アラーム時のアクション
+      AlarmName: !Sub ${AlertName} EC2 DISK USED 90%
+      MetricName: "LogicalDisk % Free Space"
+      Namespace: CWAgent
+      Statistic: Average  # 平均
+      Period: 300  # 期間[s]
+      EvaluationPeriods: 1  # 閾値超過回数
+      Threshold: 10  # 閾値
+      TreatMissingData: notBreaching  # 欠落データは良好
+      # OKActions:
+      #   - !Ref SNSTopicName  # 復旧時のアクション
+      ComparisonOperator: LessThanOrEqualToThreshold  # 閾値以下
+      Dimensions:
+        - Name: InstanceId
+          Value: !Ref Ec2InstanceId
+        - Name: ImageId
+          Value: !Ref Ec2ImageId
+        - Name: InstanceType
+          Value: !Ref Ec2InstanceType
+        - Name: instance
+          Value: "C:"
+        - Name: objectname
+          Value: LogicalDisk
