@@ -4,11 +4,19 @@ Parameters:
   KeyName:
     Description: input EC2 Keyname
     Type: 'AWS::EC2::KeyPair::KeyName'
+  DBPassword:
+    NoEcho: 'true'
+    Description: Password MySQL database access
+    Type: String
+    MinLength: '8'
+    MaxLength: '41'
+    AllowedPattern: '[a-zA-Z0-9]*'
+    ConstraintDescription: must contain only alphanumeric characters.
 Resources:
     EC2VPC:
         Type: "AWS::EC2::VPC"
         Properties:
-            CidrBlock: "10.4.0.0/16"
+            CidrBlock: "10.1.0.0/16"
             EnableDnsSupport: true
             EnableDnsHostnames: false
             InstanceTenancy: "default"
@@ -21,7 +29,7 @@ Resources:
         Type: "AWS::EC2::Subnet"
         Properties:
             AvailabilityZone: !Sub "${AWS::Region}a"
-            CidrBlock: "10.4.0.0/20"
+            CidrBlock: "10.1.0.0/20"
             VpcId: !Ref EC2VPC
             MapPublicIpOnLaunch: false
             Tags:
@@ -34,7 +42,7 @@ Resources:
         Type: "AWS::EC2::Subnet"
         Properties:
             AvailabilityZone: !Sub "${AWS::Region}c"
-            CidrBlock: "10.4.16.0/20"
+            CidrBlock: "10.1.16.0/20"
             VpcId: !Ref EC2VPC
             MapPublicIpOnLaunch: false
             Tags:
@@ -47,7 +55,7 @@ Resources:
         Type: "AWS::EC2::Subnet"
         Properties:
             AvailabilityZone: !Sub "${AWS::Region}d"
-            CidrBlock: "10.4.32.0/20"
+            CidrBlock: "10.1.32.0/20"
             VpcId: !Ref EC2VPC
             MapPublicIpOnLaunch: false
             Tags:
@@ -264,3 +272,45 @@ Resources:
               -
                 Key: "Name"
                 Value: "test-EC2"
+
+    RDSDBCluster:
+        Type: "AWS::RDS::DBCluster"
+        Properties:
+            DBClusterIdentifier: test-aurora-cluster
+            BackupRetentionPeriod: 30
+            DBClusterParameterGroupName: "default.aurora-mysql5.7"
+            DBSubnetGroupName: !Sub ${RDSDBSubnetGroup}
+            Engine: aurora-mysql
+            MasterUsername: "admin"
+            MasterUserPassword: !Ref DBPassword
+            PreferredBackupWindow: "20:00-20:30"
+            PreferredMaintenanceWindow: "sat:02:00-sat:02:30"
+            StorageEncrypted: true
+            EngineVersion: "5.7.mysql_aurora.2.09.2"
+            EnableIAMDatabaseAuthentication: false
+            EnableCloudwatchLogsExports:
+              - "error"
+            EngineMode: "provisioned"
+            DeletionProtection: false
+            EnableHttpEndpoint: false
+
+    RDSDBInstance:
+        Type: "AWS::RDS::DBInstance"
+        Properties:
+            DBClusterIdentifier: !Ref RDSDBCluster
+            DBInstanceIdentifier : test-instance
+            DBInstanceClass: "db.t3.small"
+            DBSubnetGroupName: !Ref RDSDBSubnetGroup
+            DBParameterGroupName: "default.aurora-mysql5.7"
+            OptionGroupName: "default:aurora-mysql-5-7"
+            Engine: aurora-mysql
+
+    RDSDBSubnetGroup:
+        Type: "AWS::RDS::DBSubnetGroup"
+        Properties:
+            DBSubnetGroupDescription: "Created from the RDS Management Console"
+            DBSubnetGroupName: !Sub "default-${EC2VPC}"
+            SubnetIds:
+              - !Ref EC2Subnet
+              - !Ref EC2Subnet2
+              - !Ref EC2Subnet3
